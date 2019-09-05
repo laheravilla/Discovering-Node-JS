@@ -21,7 +21,16 @@ app.get('/', (request, response) => {
     );
 });
 
-app.get('/test', (request, response) => {
+// app.get('/test', (request, response) => {
+//     response.status(200).send({
+//         message: 'Hello World from my first API Node JS'
+//     });
+// });
+
+app.post('/test/:id', (request, response) => {
+    console.log(request.body.name); // Enter in Postman body name and value Output: Yurniel
+    console.log(request.query.web); // Enter http://localhost:3700/test?web=google.es Output: google.es
+    console.log(request.params.id); // Enter http://localhost:3700/test/199?web=google.es Output: 199
     response.status(200).send({
         message: 'Hello World from my first API Node JS'
     });
