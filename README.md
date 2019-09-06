@@ -88,4 +88,6 @@ Connect to database on `index.js`
 
 Add `app.js` to create server with NodeJS 
 
+`$ npm start` : Lanzar el servidor
+
 ***
