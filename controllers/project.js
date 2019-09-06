@@ -4,6 +4,11 @@ var Project = require('../models/project');
 
 // One way to write a controller
 var controller = {
+    /**
+     * Displays welcome to home
+     * @param {*} request 
+     * @param {*} response 
+     */
     home: function (request, response) 
     {
         return response.status(200).send({
@@ -11,6 +16,11 @@ var controller = {
         });
     },
 
+    /**
+     * This is a testing method
+     * @param {*} request 
+     * @param {*} response 
+     */
     test: function (request, response)
     {
         return response.status(200).send({
@@ -18,6 +28,11 @@ var controller = {
         });
     },
 
+    /**
+     * Save project in database
+     * @param {*} request 
+     * @param {*} response 
+     */
     saveProject: function(request, response)
     {
        var project = new Project();
@@ -38,7 +53,27 @@ var controller = {
             // If there are not error save in database
             return response.status(200).send({project: projectStored});
        });
+    },
+
+    /**
+     * Get and list all data project
+     * @param {*} request 
+     * @param {*} response 
+     */
+    getProject: function(request, response)
+    {
+        var projectId = request.params.id;
+
+        if (projectId === null) return response.status(404).send({message: 'Project do not exist'});
+
+        Project.findById(projectId, (error, project) => {
+            if (error) return response.status(500).send({message: 'Error trying to get data'});
+            if (!project) return response.status(404).send({message: 'Project do not exist'});
+
+            return response.status(200).send({project});
+        });
     }
+
 };
 
 module.exports = controller;
