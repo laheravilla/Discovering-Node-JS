@@ -9,7 +9,8 @@ var ProjectSchema = Schema({
     description: String,
     category: String,
     year: Number,
-    technologies: [String]
+    technologies: String,
+    image: String
 });
 
 module.exports = mongoose.model('Project', ProjectSchema); // Mongoose export project name in plural and lowercase (projects)
