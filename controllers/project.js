@@ -56,7 +56,7 @@ var controller = {
     },
 
     /**
-     * Get and list all data project
+     * Get and list one project by ID
      * @param {*} request 
      * @param {*} response 
      */
@@ -71,6 +71,26 @@ var controller = {
             if (!project) return response.status(404).send({message: 'Project do not exist'});
 
             return response.status(200).send({project});
+        });
+    },
+
+    /**
+     * Return an array of projects
+     * @param {*} request 
+     * @param {*} response 
+     */
+    getAllProjects: function(request, response)
+    {
+        Project.find({}).exec((error, projects) => { 
+            // FIND({year:2019}) would return data with this condition
+            // FIND({}).SORT('year') order ASC by year
+            // FIND({}).SORT('-year') order DESC by year
+
+            if (error) return response.status(500).send({message: 'Error trying to retrieve data'});
+
+            if (!projects) return response.status(404).send({message: 'Any project to list'});
+
+            return response.status(200).send({projects}); // Return an array
         });
     }
 

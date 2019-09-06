@@ -8,5 +8,6 @@ router.get('/home', ProjectController.home);
 router.post('/test', ProjectController.test);
 router.post('/save-project', ProjectController.saveProject);
 router.get('/project/:id?', ProjectController.getProject); // (?) Optional parameter. Inh that case, use a condition in method
+router.get('/all-projects/', ProjectController.getAllProjects);
 
 module.exports = router;
