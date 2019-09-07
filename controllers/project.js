@@ -92,6 +92,20 @@ var controller = {
 
             return response.status(200).send({projects}); // Return an array
         });
+    },
+
+    updateProject: function(request, response)
+    {
+        var projectId = request.params.id;
+        var update = request.body;
+
+        Project.findByIdAndUpdate(projectId, update, {new:true}, (error, projectUpdated) => {
+            if (error) return response.status(505).send({message: 'Error trying to update'});
+
+            if (!projectUpdated) return response.status(404).send({message: 'Project does not exist'});
+
+            return response.status(200).send({project: projectUpdated});
+        });
     }
 
 };
