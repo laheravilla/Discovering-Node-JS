@@ -10,5 +10,6 @@ router.post('/save-project', ProjectController.saveProject);
 router.get('/project/:id?', ProjectController.getProject); // (?) Optional parameter. Inh that case, use a condition in method
 router.get('/all-projects/', ProjectController.getAllProjects);
 router.put('/project/:id', ProjectController.updateProject);
+router.delete('/project/:id', ProjectController.removeProject);
 
 module.exports = router;

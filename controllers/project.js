@@ -106,6 +106,19 @@ var controller = {
 
             return response.status(200).send({project: projectUpdated});
         });
+    },
+
+    removeProject: function(request, response)
+    {
+        var projectId = request.params.id;
+
+        Project.findByIdAndDelete(projectId, (error, projectDeleted) => {
+            if (error) return response.status(500).send({message: 'Could not delete the project'});
+
+            if (!projectDeleted) return response.status(404).send({message: 'Impossible to delete the project'});
+
+            return response.status(200).send({project: projectDeleted});
+        });
     }
 
 };
