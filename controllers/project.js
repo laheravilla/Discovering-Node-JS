@@ -1,6 +1,7 @@
 'use strict'
 
 var Project = require('../models/project');
+var fs = require('fs'); // Libreria filesystem. Posibilita borrar un archivo
 
 // One way to write a controller
 var controller = {
@@ -94,6 +95,11 @@ var controller = {
         });
     },
 
+    /**
+     * Updates one document by ID
+     * @param {*} request 
+     * @param {*} response 
+     */
     updateProject: function(request, response)
     {
         var projectId = request.params.id;
@@ -108,6 +114,11 @@ var controller = {
         });
     },
 
+    /**
+     * Deletes one document from db by ID
+     * @param {*} request 
+     * @param {*} response 
+     */
     removeProject: function(request, response)
     {
         var projectId = request.params.id;
@@ -121,6 +132,11 @@ var controller = {
         });
     },
 
+    /**
+     * Uploads and POSTs one image 
+     * @param {*} request 
+     * @param {*} response 
+     */
     uploadImageFile: function(request, response)
     {
         var projectId = request.params.id;
@@ -130,16 +146,25 @@ var controller = {
             var filePath = request.files.image.path;
             var fileSplit = filePath.split('\\');
             var fileName = fileSplit[1];
+            var extensionSplit = fileName.split('\.'); // Cortar por la extension
+            var fileExtension = extensionSplit[1];
 
-            Project.findByIdAndUpdate(projectId, {image: fileName}, {new: true}, (error, projectUpdated) => {
+            if (fileExtension === 'png' ||
+                fileExtension === 'jpg' ||
+                fileExtension === 'jpeg' ||
+                fileExtension === 'gif') {
+                Project.findByIdAndUpdate(projectId, {image: fileName}, {new: true}, (error, projectUpdated) => {
                 if (error) return response.status(500).send({message: 'Image not uploaded'});
 
                 if (!projectUpdated) return response.status(404).send({message: 'Project does not exist'});
 
                 return response.status(200).send({project: projectUpdated});
-            });
-
-            
+                });
+            } else {
+                fs.unlink(filePath, (error) => {
+                    return response.status(200).send({message: 'Estension not valid'});
+                });
+            }
         } else {
             return response.status(200).send({message: fileName});
         }
