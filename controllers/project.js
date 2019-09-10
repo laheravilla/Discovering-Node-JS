@@ -119,8 +119,31 @@ var controller = {
 
             return response.status(200).send({project: projectDeleted});
         });
-    }
+    },
 
+    uploadImageFile: function(request, response)
+    {
+        var projectId = request.params.id;
+        var fileName = 'Image not uploaded...'
+
+        if (request.files) {
+            var filePath = request.files.image.path;
+            var fileSplit = filePath.split('\\');
+            var fileName = fileSplit[1];
+
+            Project.findByIdAndUpdate(projectId, {image: fileName}, {new: true}, (error, projectUpdated) => {
+                if (error) return response.status(500).send({message: 'Image not uploaded'});
+
+                if (!projectUpdated) return response.status(404).send({message: 'Project does not exist'});
+
+                return response.status(200).send({project: projectUpdated});
+            });
+
+            
+        } else {
+            return response.status(200).send({message: fileName});
+        }
+    }
 };
 
 module.exports = controller;
